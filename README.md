@@ -19,7 +19,7 @@ The project follows a Best Practices Framework and is organized into the followi
 - 📁 04_Py: contains Python scripts for more complex transformations not feasible in Qlik Sense.
 
 ## 🤔 Key Differences from StackOverflow's Analysis
-While StackOverflow provides its own [survey analysis](https://survey.stackoverflow.com/2023/), this project differs in several ways:
+While StackOverflow provides its own [survey analysis](https://survey.stackoverflow.co/2023/), this project differs in several ways:
 - **Currency Conversion:** utilizes average monthly rates from a trusted source ([BIS](https://data.bis.org/)) for consistent compensation data across years.
 - **Salary Data Adjustments:** addresses inconsistencies in SO's salary data, standardizing values and filtering outliers for clarity.
 - **Years Considered:** includes data from 2021 to 2023 for comparative analysis, unlike SO which focuses on 2022 and 2023.
