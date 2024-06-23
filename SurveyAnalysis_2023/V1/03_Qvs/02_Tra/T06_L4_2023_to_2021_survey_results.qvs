@@ -1,0 +1,66 @@
+Set vQvd_Nombre = L2_2023_to_2021_bis_currency_exchange_rates;
+Set vF_USD_CompTotal = Round(CompTotal / ApplyMap('L2_2023_to_2021_bis_currency_exchange_rates', CurrencyId, Null()));
+
+$(vQvd_Nombre):
+MAPPING LOAD
+  CurrencyId,
+  "Exchange Rate"
+FROM [$(vR_QvdTra)L2_2023_to_2021_bis_currency_exchange_rates.qvd] (qvd);
+
+Set vQvd_Nombre = L4_2023_to_2021_survey_results;
+
+$(vQvd_Nombre):
+LOAD
+    ResponseId,
+    'DT_' & ResponseId as DevType_Id,
+    'LHW_' & ResponseId as LangsHaveWorked_Id,
+    'LWW_' & ResponseId as LangsWantToWork_Id,
+    'DHW_' & ResponseId as DatabaseHaveWorkedWith_Id,
+    'DWW_' & ResponseId as DatabaseWantToWorkWith_Id,
+    'ET_' & ResponseId as EmploymentType_Id,
+    ResponseYear,
+    MainBranch,
+    Employment,
+    Country,
+    EdLevel,
+    LearnCode,
+    YearsCode,
+    YearsCodePro,
+    DevType,
+    OrgSize,
+    Currency,
+    CurrencyId,
+    CompTotal,
+    LanguageHaveWorkedWith,
+    LanguageWantToWorkWith,
+    DatabaseHaveWorkedWith,
+    DatabaseWantToWorkWith,
+    PlatformHaveWorkedWith,
+    PlatformWantToWorkWith,
+    WebframeHaveWorkedWith,
+    WebframeWantToWorkWith,
+    MiscTechHaveWorkedWith,
+    MiscTechWantToWorkWith,
+    ToolsTechHaveWorkedWith,
+    ToolsTechWantToWorkWith,
+    NEWCollabToolsHaveWorkedWith,
+    NEWCollabToolsWantToWorkWith,
+    NEWSOSites,
+    SOVisitFreq,
+    SOAccount,
+    SOPartFreq,
+    SOComm,
+    "Age",
+    ConvertedCompYearly,
+    // Here I consider amounts bigger than $2M or lower than $100 as errors,
+    // and I assign null values to those numbers.
+    If(
+        $(vF_USD_CompTotal) > 2000000 or $(vF_USD_CompTotal) < 100,
+        Null(),
+        $(vF_USD_CompTotal)
+      ) as USD_CompTotal,
+    ApplyMap('L2_2023_to_2021_bis_currency_exchange_rates', CurrencyId, 0) as ExchangeRate
+FROM [$(vR_QvdTra)L3_2023_to_2021_survey_results.qvd] (qvd);
+
+Store $(vQvd_Nombre) Into [$(vR_QvdTra)$(vQvd_Nombre).qvd] (qvd);
+Drop Table $(vQvd_Nombre);

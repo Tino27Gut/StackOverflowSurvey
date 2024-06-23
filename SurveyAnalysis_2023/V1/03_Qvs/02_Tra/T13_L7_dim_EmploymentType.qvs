@@ -1,0 +1,32 @@
+Set vQvd_Nombre = L7_dim_EmploymentType;
+
+Tbl_Tmp:
+CrossTable(EmploymentType, EmploymentStatus)
+LOAD
+    EmploymentType_Id,
+    "Employed full-time",
+    "Employed part-time",
+    "I prefer not to say",
+    "Independent contractor, freelancer, or self-employed",
+    "Not employed, and not looking for work",
+    "Not employed, but looking for work",
+    Retired,
+    "Student full-time",
+    "Student part-time"
+FROM [$(vR_Data)L6_dim_EmploymentType.csv]
+(txt, codepage is 28591, embedded labels, delimiter is ',', msq);
+
+NoConcatenate
+
+$(vQvd_Nombre):
+LOAD
+	EmploymentType_Id,
+    EmploymentType,
+    EmploymentStatus
+RESIDENT Tbl_Tmp
+WHERE MATCH(EmploymentStatus, 1);
+
+Drop Field EmploymentStatus;
+Drop Table Tbl_Tmp;
+Store $(vQvd_Nombre) Into [$(vR_QvdTra)$(vQvd_Nombre).qvd] (qvd);
+Drop Table $(vQvd_Nombre);

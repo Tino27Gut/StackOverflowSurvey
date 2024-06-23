@@ -1,0 +1,49 @@
+SET ThousandSep=',';
+SET DecimalSep='.';
+SET MoneyThousandSep=',';
+SET MoneyDecimalSep='.';
+SET MoneyFormat='$ ###0.00;-$ ###0.00';
+SET TimeFormat='h:mm:ss TT';
+SET DateFormat='D/M/YYYY';
+SET TimestampFormat='D/M/YYYY h:mm:ss[.fff] TT';
+SET FirstWeekDay=6;
+SET BrokenWeeks=1;
+SET ReferenceDay=0;
+SET FirstMonthOfYear=1;
+SET CollationLocale='en-US';
+SET MonthNames='Jan;Feb;Mar;Apr;May;Jun;Jul;Aug;Sep;Oct;Nov;Dec';
+SET LongMonthNames='January;February;March;April;May;June;July;August;September;October;November;December';
+SET DayNames='Mon;Tue;Wed;Thu;Fri;Sat;Sun';
+SET LongDayNames='Monday;Tuesday;Wednesday;Thursday;Friday;Saturday;Sunday';
+SET NumericalAbbreviation='3:k;6:M;9:G;12:T;15:P;18:E;21:Z;24:Y;-3:m;-6:μ;-9:n;-12:p;-15:f;-18:a;-21:z;-24:y';
+
+/* ----- RUTAS ----- */
+/* Ruta Principal */
+Set vR_Root = lib://Dropbox/00_PersonalProjects/;
+
+/* Ruta de Ambiente */
+Set vR_Ambiente = $(vR_Root)App_Develop/;
+
+/* Ruta de Proyecto */
+Set vR_Proyecto = $(vR_Ambiente)SurveyAnalysis_2023/V1/;
+
+/* Rutas Qvds */
+Set vR_Qvd = $(vR_Proyecto)02_Qvd/;
+Set vR_QvdExt = $(vR_Qvd)01_Ext/;
+Set vR_QvdTra = $(vR_Qvd)02_Tra/;
+
+/* Rutas de datos externos */
+
+Set vR_Data = $(vR_Proyecto)01_Data/;
+
+/* Rutas Qvss*/
+
+Set vR_Qvs = $(vR_Proyecto)03_Qvs/;
+Set vR_QvsExt = $(vR_Qvs)01_Ext/;
+Set vR_QvsTra = $(vR_Qvs)02_Tra/;
+
+/* Funciones */
+
+// Transformar campos "NA" a Null()
+
+Set vF_NaToNull = if($1 = 'NA', Null(), $1) as $1;

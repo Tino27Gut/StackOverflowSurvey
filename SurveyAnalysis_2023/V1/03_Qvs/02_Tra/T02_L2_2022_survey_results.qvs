@@ -1,0 +1,43 @@
+Set vQvd_Nombre = L2_2022_survey_results;
+
+$(vQvd_Nombre):
+LOAD
+    Year(Date#('2022-01-01', 'YYYY-MM-DD')) AS ResponseYear,
+    2022 & '-' & ResponseId AS ResponseId,
+    MainBranch,
+    Employment,
+    Country,
+    EdLevel,
+    LearnCode,
+    YearsCode,
+    YearsCodePro,
+    DevType,
+    OrgSize,
+    If((Left(Currency, 3)='NA'), Null(), Left(Currency, 3)) AS Currency,
+    If((Left(Currency, 3)='NA'), Null(), Year(Date#('2022-01-01', 'YYYY-MM-DD')) & '-' & Left(Currency, 3)) AS CurrencyId,
+    CompTotal,
+    LanguageHaveWorkedWith,
+    LanguageWantToWorkWith,
+    DatabaseHaveWorkedWith,
+    DatabaseWantToWorkWith,
+    PlatformHaveWorkedWith,
+    PlatformWantToWorkWith,
+    WebframeHaveWorkedWith,
+    WebframeWantToWorkWith,
+    MiscTechHaveWorkedWith,
+    MiscTechWantToWorkWith,
+    ToolsTechHaveWorkedWith,
+    ToolsTechWantToWorkWith,
+    NEWCollabToolsHaveWorkedWith,
+    NEWCollabToolsWantToWorkWith,
+    NEWSOSites,
+    SOVisitFreq,
+    SOAccount,
+    SOPartFreq,
+    SOComm,
+    "Age",
+    ConvertedCompYearly
+FROM [$(vR_QvdExt)L1_CSV_2022_survey_results.qvd] (qvd);
+
+Store $(vQvd_Nombre) Into [$(vR_QvdTra)$(vQvd_Nombre).qvd] (qvd);
+Drop Table $(vQvd_Nombre);

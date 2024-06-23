@@ -1,0 +1,53 @@
+Set vQvd_Nombre = L5_2023_to_2021_survey_results;
+
+// Converts the file to CSV format and stores it
+
+$(vQvd_Nombre):
+LOAD
+    ResponseId,
+    DevType_Id,
+    LangsHaveWorked_Id,
+    LangsWantToWork_Id,
+    DatabaseHaveWorkedWith_Id,
+    DatabaseWantToWorkWith_Id,
+    EmploymentType_Id,
+    ResponseYear,
+    MainBranch,
+    Employment,
+    Country,
+    EdLevel,
+    LearnCode,
+    YearsCode,
+    YearsCodePro,
+    DevType,
+    OrgSize,
+    Currency,
+    CurrencyId,
+    CompTotal,
+    LanguageHaveWorkedWith,
+    LanguageWantToWorkWith,
+    DatabaseHaveWorkedWith,
+    DatabaseWantToWorkWith,
+    PlatformHaveWorkedWith,
+    PlatformWantToWorkWith,
+    WebframeHaveWorkedWith,
+    WebframeWantToWorkWith,
+    MiscTechHaveWorkedWith,
+    MiscTechWantToWorkWith,
+    ToolsTechHaveWorkedWith,
+    ToolsTechWantToWorkWith,
+    NEWCollabToolsHaveWorkedWith,
+    NEWCollabToolsWantToWorkWith,
+    NEWSOSites,
+    SOVisitFreq,
+    SOAccount,
+    SOPartFreq,
+    SOComm,
+    "Age",
+    ConvertedCompYearly,
+    USD_CompTotal,
+    ExchangeRate
+FROM [$(vR_QvdTra)L4_2023_to_2021_survey_results.qvd] (qvd);
+
+Store $(vQvd_Nombre) Into [$(vR_Data)$(vQvd_Nombre).csv] (txt, delimiter is ',');
+Drop Table $(vQvd_Nombre);

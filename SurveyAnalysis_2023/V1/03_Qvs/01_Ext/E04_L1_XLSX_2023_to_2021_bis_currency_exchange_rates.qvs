@@ -1,0 +1,22 @@
+﻿Set vQvd_Nombre = L1_XLSX_2023_to_2021_bis_currency_exchange_rates;
+
+$(vQvd_Nombre):
+LOAD
+    "DATAFLOW_ID:Dataflow ID",
+    "KEY:Timeseries Key",
+    "FREQ:Frequency",
+    "REF_AREA:Reference area",
+    "CURRENCY:Currency",
+    "COLLECTION:Collection",
+    Unit,
+    "Unit multiplier",
+    "TIME_PERIOD:Period",
+    "OBS_CONF:Confidentiality",
+    "OBS_PRE_BREAK:Pre-break value",
+    "OBS_STATUS:Status",
+    "OBS_VALUE:Value"
+FROM [$(vR_Data)L0_2023_to_2021_bis_currency_exchange_rates.xlsx]
+(ooxml, embedded labels, table is [timeseries observations]);
+
+Store $(vQvd_Nombre) Into [$(vR_QvdExt)$(vQvd_Nombre).qvd] (qvd);
+Drop Table $(vQvd_Nombre);

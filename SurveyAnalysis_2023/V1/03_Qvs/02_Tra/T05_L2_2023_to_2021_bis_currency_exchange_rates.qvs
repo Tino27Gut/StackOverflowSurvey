@@ -1,0 +1,15 @@
+Set vQvd_Nombre = L2_2023_to_2021_bis_currency_exchange_rates;
+
+$(vQvd_Nombre):
+LOAD
+    Year(Date#("TIME_PERIOD:Period", 'YYYY-MM-DD')) & '-' &Left("CURRENCY:Currency", 3) AS CurrencyId,
+    Avg("OBS_VALUE:Value") AS "Exchange Rate"
+FROM [$(vR_QvdExt)L1_XLSX_2023_to_2021_bis_currency_exchange_rates.qvd] (qvd)
+WHERE 
+	Month(Date#("TIME_PERIOD:Period", 'YYYY-MM-DD')) = 5
+GROUP BY
+	Year(Date#("TIME_PERIOD:Period", 'YYYY-MM-DD')) & '-' &Left("CURRENCY:Currency", 3)
+	;
+
+Store $(vQvd_Nombre) Into [$(vR_QvdTra)$(vQvd_Nombre).qvd] (qvd);
+Drop Table $(vQvd_Nombre);

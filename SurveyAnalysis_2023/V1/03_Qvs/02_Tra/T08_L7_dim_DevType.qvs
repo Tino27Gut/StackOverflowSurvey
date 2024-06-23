@@ -1,0 +1,55 @@
+Set vQvd_Nombre = L7_dim_DevType;
+
+Tbl_Tmp:
+CrossTable(DevType, DevStatus)
+LOAD
+    DevType_Id,
+    "Academic researcher",
+    Blockchain,
+    "Cloud infrastructure engineer",
+    "Data or business analyst",
+    "Data scientist or machine learning specialist",
+    "Database administrator",
+    Designer,
+    "DevOps specialist",
+    "Developer Advocate",
+    "Developer Experience",
+    "Developer, QA or test",
+    "Developer, back-end",
+    "Developer, desktop or enterprise applications",
+    "Developer, embedded applications or devices",
+    "Developer, front-end",
+    "Developer, full-stack",
+    "Developer, game or graphics",
+    "Developer, mobile",
+    Educator,
+    "Engineer, data",
+    "Engineer, site reliability",
+    "Engineering manager",
+    "Hardware Engineer",
+    "Marketing or sales professional",
+    "Product manager",
+    "Project manager",
+    "Research & Development role",
+    Scientist,
+    "Security professional",
+    "Senior Executive (C-Suite, VP, etc.)",
+    Student,
+    "System administrator"
+FROM [$(vR_Data)L6_dim_DevType.csv]
+(txt, codepage is 28591, embedded labels, delimiter is ',', msq);
+
+NoConcatenate
+
+$(vQvd_Nombre):
+LOAD
+	DevType_Id,
+    DevType,
+    DevStatus
+RESIDENT Tbl_Tmp
+WHERE MATCH(DevStatus, 1);
+
+Drop Field DevStatus;
+Drop Table Tbl_Tmp;
+Store $(vQvd_Nombre) Into [$(vR_QvdTra)$(vQvd_Nombre).qvd] (qvd);
+Drop Table $(vQvd_Nombre);

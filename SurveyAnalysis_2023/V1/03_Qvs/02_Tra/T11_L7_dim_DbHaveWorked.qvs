@@ -1,0 +1,59 @@
+Set vQvd_Nombre = L7_dim_DbHaveWorked;
+
+Tbl_Tmp:
+CrossTable(DbHaveWorkedWith, DbStatus)
+LOAD
+    DatabaseHaveWorkedWith_Id,
+    BigQuery,
+    Cassandra,
+    Clickhouse,
+    "Cloud Firestore",
+    Cockroachdb,
+    "Cosmos DB",
+    // "Couch DB",
+    CouchDB,
+    Couchbase,
+    Datomic,
+    DuckDB,
+    DynamoDB,
+    // Dynamodb,
+    Elasticsearch,
+    Firebase,
+    // "Firebase Realtime Database",
+    Firebird,
+    H2,
+    "IBM DB2",
+    InfluxDB,
+    MariaDB,
+    "Microsoft Access",
+    "Microsoft SQL Server",
+    MongoDB,
+    MySQL,
+    // Neo4J,
+    Neo4j,
+    Oracle,
+    PostgreSQL,
+    RavenDB,
+    Redis,
+    SQLite,
+    Snowflake,
+    Solr,
+    Supabase,
+    TiDB
+FROM [$(vR_Data)L6_dim_DbHaveWorked.csv]
+(txt, utf8, embedded labels, delimiter is ',', msq);
+
+NoConcatenate
+
+$(vQvd_Nombre):
+LOAD
+	DatabaseHaveWorkedWith_Id,
+    DbHaveWorkedWith,
+	DbStatus
+Resident Tbl_Tmp
+Where Match(DbStatus, 1);
+
+Drop Field DbStatus;
+Drop Table Tbl_Tmp;
+Store $(vQvd_Nombre) Into [$(vR_QvdTra)$(vQvd_Nombre).qvd] (qvd);
+Drop Table $(vQvd_Nombre);

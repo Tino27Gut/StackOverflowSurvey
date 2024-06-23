@@ -1,0 +1,79 @@
+Set vQvd_Nombre = L7_dim_LangsHaveWorked;
+
+Tbl_Tmp:
+CrossTable(LangsHaveWorked, LangStatus)
+LOAD
+    LangsHaveWorked_Id,
+    APL,
+    Ada,
+    Apex,
+    Assembly,
+    "Bash/Shell",
+    // "Bash/Shell (all shells)",
+    C,
+    C#,
+    "C++",
+    // COBOL,
+    Clojure,
+    Cobol,
+    Crystal,
+    Dart,
+    Delphi,
+    Elixir,
+    Erlang,
+    F#,
+    Flow,
+    Fortran,
+    GDScript,
+    Go,
+    Groovy,
+    "HTML/CSS",
+    Haskell,
+    Java,
+    JavaScript,
+    Julia,
+    Kotlin,
+    // LISP,
+    Lisp,
+    Lua,
+    // MATLAB,
+    Matlab,
+    Nim,
+    Node.js,
+    OCaml,
+    "Objective-C",
+    PHP,
+    Perl,
+    PowerShell,
+    Prolog,
+    Python,
+    "R",
+    Raku,
+    Ruby,
+    Rust,
+    SAS,
+    "SQL",
+    Scala,
+    Solidity,
+    Swift,
+    TypeScript,
+    VBA,
+    "Visual Basic (.Net)",
+    Zig
+FROM [$(vR_Data)L6_dim_LangsHaveWorked.csv]
+(txt, utf8, embedded labels, delimiter is ',', msq);
+
+NoConcatenate
+
+$(vQvd_Nombre):
+LOAD
+	LangsHaveWorked_Id,
+    LangsHaveWorked,
+    LangStatus
+RESIDENT Tbl_Tmp
+WHERE MATCH(LangStatus, 1);
+
+Drop Field LangStatus;
+Drop Table Tbl_Tmp;
+Store $(vQvd_Nombre) Into [$(vR_QvdTra)$(vQvd_Nombre).qvd] (qvd);
+Drop Table $(vQvd_Nombre);
